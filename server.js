@@ -9,7 +9,7 @@ const authRoute=require('./routes/authRoute')
 
 
 
-const PORT=3000
+const PORT=process.env.PORT||3000
 const app=express()
 app.set('view engine','ejs')
 app.use(express.json())
