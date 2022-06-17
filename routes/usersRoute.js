@@ -141,7 +141,7 @@ res.status(201).json({
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
- router.get('/', async(req,res)=>{
+ router.get('/',authMiddleware,async(req,res)=>{
    try {
      const content=await userModel.find()
      res.status(200).json(content)

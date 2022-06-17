@@ -67,7 +67,7 @@ const app = express()
  *               items:
  *                 $ref: '#/components/schemas/Blog'
  */
-router.get('/', async (req, res) => {
+router.get('/',authMiddleware,async (req, res) => {
 
     try {
         const blog = await blogModel.find()
