@@ -12,7 +12,7 @@ const UserSchema=mongoose.Schema({
      },
      birthday: {
          type:String,
-         required:true
+         required:false
          },
     age:{ 
      type: String,

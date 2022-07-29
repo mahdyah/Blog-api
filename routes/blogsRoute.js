@@ -2,6 +2,8 @@ const express = require('express')
 const authMiddleware = require('../middleware/authMiddleware')
 const blogModel = require('../models/BlogSchema')
 const router = express.Router()
+const dayjs = require('dayjs');
+const moment=require('moment')
 const app = express()
 
 /**
@@ -67,15 +69,30 @@ const app = express()
  *               items:
  *                 $ref: '#/components/schemas/Blog'
  */
-router.get('/',authMiddleware,async (req, res) => {
+router.get('/', async (req, res) => {
 
     try {
         const blog = await blogModel.find()
         res.status(200).json(blog)
     } catch (error) {
-        res.status(400).json('Bad request')
+        console.log(error)
     }
 })
+
+router.get('/:id', authMiddleware, async (req, res) => {
+    const id = req.params.id
+    console.log(req.user);
+    try {
+        const blog = await blogModel.findById(id)
+        res.status(200).json(blog)
+    } catch (error) {
+        console.error(error)
+        res.status(400).json({
+            msg: 'Id not found'
+        })
+    }
+})
+
 
 /**
  * @swagger
@@ -100,9 +117,16 @@ router.get('/',authMiddleware,async (req, res) => {
  *         description: Some server error
  */
 router.post('/', authMiddleware, async (req, res) => {
+   
     const data = req.body
     data.user = req.user.id
-    console.log(data.user, 'this is on post')
+    data.created_by=req.user.username
+    // data.created_at=dayjs().format('MM/DD/YYYY');
+    data.created_at=moment().format('MMMM Do YYYY, h:mm:ss a');
+
+    // created by the username
+    // data.created_by=req.user.username
+    console.log(data, 'this is on post')
     try {
         const content = await blogModel.create(data)
         res.status(201).json(content)
@@ -147,7 +171,7 @@ router.delete('/:id', authMiddleware, async (req, res) => {
                 msg: 'Not Authorized! '
             })
         }
-        await blogModel.findByIdAndDelete(id)
+       const blog= await blogModel.findByIdAndDelete(id)
         res.status(200).json({
             msg: "The content was deleted"
         })

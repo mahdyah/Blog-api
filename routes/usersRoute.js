@@ -103,13 +103,15 @@ async(req,res)=>{
             return res.json({msg:'User already exist!'})
         }
         
-const SALT=await bcrypt.genSalt(10)
+const SALT=await bcrypt.genSalt(12)
 const hashedPassword=await bcrypt.hash(userData.password,SALT)
 
 userData.password=hashedPassword
 const user=await userModel.create(userData)
+
 const payload={
     id:user._id,
+    username: user.username,
     email:user.email
 }
 const TOKEN=jwt.sign(payload,process.env.SECRET_KEY)
@@ -120,7 +122,6 @@ res.status(201).json({
 
     } catch (error) {
       console.log(error)  
-      
       res.status(400).json('Bad Request')
     }
 })
@@ -141,12 +142,17 @@ res.status(201).json({
  *               items:
  *                 $ref: '#/components/schemas/User'
  */
- router.get('/',authMiddleware,async(req,res)=>{
-   try {
-     const content=await userModel.find()
+ router.get('/:id',authMiddleware,async(req,res)=>{
+    const id=req.params.id
+console.log(req.user)
+    try {
+     const content=await userModel.findById()
      res.status(200).json(content)
    } catch (error) {
     console.log(error)
+    res.status(400).json({
+        msg:'Id not found'
+    })
    }
  })
  module.exports=router

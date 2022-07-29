@@ -50,7 +50,8 @@ if (!isMatch){
 
 const payload={
     id:user._id,
-    emai:user.email
+    emai:user.email,
+    username:user.username
 }
 
 const TOKEN=jwt.sign(payload,process.env.SECRET_KEY)
