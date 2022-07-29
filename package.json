@@ -12,15 +12,19 @@
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "cors": "^2.8.5",
+    "dayjs": "^1.11.4",
     "dotenv": "^16.0.1",
     "ejs": "^3.1.8",
     "express": "^4.18.1",
     "express-validator": "^6.14.1",
     "helmet": "^5.1.0",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.4",
     "mongoose": "^6.3.8",
     "morgan": "^1.10.0",
     "readmeio": "^5.1.2",
+    "start": "^5.1.0",
     "swagger-jsdoc": "^6.2.1",
     "swagger-ui-express": "^4.4.0"
   }
